@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InstaBio & Cute Tools - Aesthetic Caption, Font & Hashtag Generator</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #fff0f5 0%, #ffd1dc 50%, #ffe4e1 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Cherry Blossom Petals */
+        .petal {
+            position: fixed;
+            top: -10%;
+            background-color: #ffb7c5;
+            border-radius: 150% 0 150% 0;
+            opacity: 0.7;
+            pointer-events: none;
+            z-index: 1;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            0% { top: -10%; transform: translateX(0) rotate(0deg); }
+            100% { top: 105%; transform: translateX(100px) rotate(360deg); }
+        }
+
+        /* Mouse Heart Trail */
+        .heart-particle {
+            position: fixed;
+            font-size: 18px;
+            pointer-events: none;
+            user-select: none;
+            z-index: 9999;
+            animation: floatUp 1s ease-out forwards;
+        }
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -100px) scale(1.5); }
+        }
+
+        header {
+            text-align: center;
+            margin: 30px 0 20px 0;
+            z-index: 2;
+        }
+        header h1 {
+            font-size: 2.2rem;
+            color: #d63384;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(255, 182, 193, 0.5);
+        }
+        header p {
+            font-size: 0.95rem;
+            color: #6c757d;
+        }
+
+        /* Navigation Tabs for Tools */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            z-index: 2;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid #ffccd5;
+            padding: 10px 18px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #d63384;
+            transition: all 0.3s ease;
+        }
+        .tab-btn.active, .tab-btn:hover {
+            background: #d63384;
+            color: white;
+            border-color: #d63384;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(5px);
+            width: 100%;
+            max-width: 600px;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(214, 51, 132, 0.15);
+            margin-bottom: 30px;
+            z-index: 2;
+            border: 2px solid #ffccd5;
+            display: none;
+        }
+        .container.active-tool {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #444;
+        }
+        select, input[type="text"], button {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ffccd5;
+            border-radius: 12px;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+            background: #fff;
+        }
+        select:focus, input[type="text"]:focus {
+            border-color: #d63384;
+        }
+        button.action-btn {
+            background: linear-gradient(135deg, #ff85a2 0%, #d63384 100%);
+            color: white;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(214, 51, 132, 0.3);
+        }
+        button.action-btn:hover {
+            opacity: 0.95;
+            transform: translateY(-2px);
+        }
+        .result-section {
+            margin-top: 25px;
+            border-top: 2px dashed #ffccd5;
+            padding-top: 20px;
+        }
+        .result-box {
+            background: #fff5f7;
+            border: 1px solid #ffccd5;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            word-break: break-word;
+        }
+        .result-text {
+            font-size: 0.95rem;
+            color: #333;
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+        .copy-btn {
+            background: #d63384;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            white-space: nowrap;
+            width: auto;
+        }
+        .copy-btn:hover {
+            background: #ff4d6d;
+        }
+        footer {
+            text-align: center;
+            color: #888;
+            font-size: 0.9rem;
+            margin-top: auto;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🌸 Aesthetic Creator Suite ✨</h1>
+        <p>Your all-in-one free tool for Bios, Captions, Fancy Fonts & Hashtags!</p>
+    </header>
+
+    <!-- Tool Navigation Tabs -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTool('captions', this)">💬 Captions & Bios</button>
+        <button class="tab-btn" onclick="switchTool('fonts', this)">✨ Fancy Fonts</button>
+        <button class="tab-btn" onclick="switchTool('hashtags', this)">#️⃣ Viral Hashtags</button>
+    </div>
+
+    <!-- TOOL 1: Captions & Bios -->
+    <div id="captionsTool" class="container active-tool">
+        <div class="form-group">
+            <label for="category">Choose Vibe / Category 💖:</label>
+            <select id="category">
+                <option value="aesthetic">🌸 Aesthetic & Chill</option>
+                <option value="attitude">✨ Attitude & Savage</option>
+                <option value="travel">✈️ Travel & Adventure</option>
+                <option value="fitness">💪 Gym & Fitness</option>
+            </select>
+        </div>
+        <button class="action-btn" onclick="generateCaptions()">Generate Captions ✨</button>
+        <div class="result-section">
+            <label>Generated Results 💌:</label>
+            <div id="captionsContainer">
+                <p style="color: #aa7a8c; font-size: 0.9rem; text-align: center;">Click generate to see aesthetic captions!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOOL 2: Fancy Font Generator -->
+    <div id="fontsTool" class="container">
+        <div class="form-group">
+            <label for="userInputText">Enter Your Name or Text 🔤:</label>
+            <input type="text" id="userInputText" placeholder="Type something here..." oninput="generateFonts()">
+        </div>
+        <div class="result-section" style="margin-top: 10px;">
+            <label>Stylish Bio Fonts ✨:</label>
+            <div id="fontsContainer">
+                <p style="color: #aa7a8c; font-size: 0.9rem; text-align: center;">Type text above to see cool font styles!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOOL 3: Hashtag Generator -->
+    <div id="hashtagsTool" class="container">
+        <div class="form-group">
+            <label for="hashtagCategory">Select Niche #️⃣:</label>
+            <select id="hashtagCategory">
+                <option value="igreels">🎬 Instagram Reels / Viral</option>
+                <option value="nature">🌿 Nature & Photography</option>
+                <option value="fashion">👗 Outfit & Fashion</option>
+                <option value="fitness">🏋️‍♂️ Fitness & Workout</option>
+            </select>
+        </div>
+        <button class="action-btn" onclick="generateHashtags()">Generate Hashtags 🚀</button>
+        <div class="result-section">
+            <label>Copy Viral Hashtags 📌:</label>
+            <div id="hashtagsContainer">
+                <p style="color: #aa7a8c; font-size: 0.9rem; text-align: center;">Click generate to get trending tags!</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; Aesthetic Suite. Made with 💖 for Creators.</p>
+    </footer>
+
+    <script>
+        // Switch between tools tabs
+        function switchTool(toolName, btnElement) {
+            document.querySelectorAll('.container').forEach(el => el.classList.remove('active-tool'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            btnElement.classList.add('active');
+            if(toolName === 'captions') document.getElementById('captionsTool').classList.add('active-tool');
+            if(toolName === 'fonts') document.getElementById('fontsTool').classList.add('active-tool');
+            if(toolName === 'hashtags') document.getElementById('hashtagsTool').classList.add('active-tool');
+        }
+
+        // Cherry Blossom Petals Effect
+        function createPetal() {
+            const petal = document.createElement('div');
+            petal.classList.add('petal');
+            const size = Math.random() * 15 + 10 + 'px';
+            petal.style.width = size;
+            petal.style.height = size;
+            petal.style.left = Math.random() * window.innerWidth + 'px';
+            petal.style.animationDuration = Math.random() * 3 + 4 + 's';
+            document.body.appendChild(petal);
+            setTimeout(() => petal.remove(), 7000);
+        }
+        setInterval(createPetal, 300);
+
+        // Heart Trail on Mouse Move and Click
+        function createHeart(e) {
+            const heart = document.createElement('div');
+            heart.classList.add('heart-particle');
+            const hearts = ['💖', '🌸', '✨', '💕', '💗'];
+            heart.innerText = hearts[Math.floor(Math.random() * hearts.length)];
+            heart.style.left = e.clientX + 'px';
+            heart.style.top = e.clientY + 'px';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 1000);
+        }
+
+        let throttleTimer;
+        window.addEventListener('mousemove', (e) => {
+            if (throttleTimer) return;
+            throttleTimer = setTimeout(() => {
+                createHeart(e);
+                throttleTimer = null;
+            }, 60);
+        });
+
+        window.addEventListener('click', (e) => {
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => createHeart(e), i * 50);
+            }
+        });
+
+        // Tool 1: Captions Data & Logic
+        const captionData = {
+            aesthetic: [
+                "Finding beauty in ordinary things. ☁️🕊️",
+                "Lost in my own little world. 🌙🌸",
+                "Soft heart, wild mind. ☕✨",
+                "Collecting moments, not things. 🌸💭",
+                "Sunsets and quiet thoughts. 🌅💖"
+            ],
+            attitude: [
+                "I don't have an attitude, I just have a personality you can't handle. 👑",
+                "Born to express, not to impress. 💯✨",
+                "Too glam to give a damn. ✨💅",
+                "Silent moves, loud results. 🤫🔥",
+                "I am who I am, your approval is not required. ⚡"
+            ],
+            travel: [
+                "Catch flights, not feelings. ✈️🌍",
+                "Wanderlust and city dust. 🏙️🎒",
+                "Collecting passport stamps like memories. 🗺️🌸",
+                "Life is short and the world is wide. 🌴✨",
+                "Adventure awaits, go find it. 🧭💖"
+            ],
+            fitness: [
+                "Sweat now, shine later. 💪🔥",
+                "Earning my body back, one rep at a time. 🏋️‍♀️✨",
+                "Push harder than yesterday. ⚡",
+                "Stronger than I was yesterday. 🦾💖",
+                "No excuses, just results. 💯🌸"
+            ]
+        };
+
+        function generateCaptions() {
+            const category = document.getElementById('category').value;
+            const selectedList = captionData[category];
+            const container = document.getElementById('captionsContainer');
+            container.innerHTML = "";
+
+            selectedList.forEach(item => {
+                const box = document.createElement('div');
+                box.className = 'result-box';
+                const textSpan = document.createElement('span');
+                textSpan.className = 'result-text';
+                textSpan.innerText = item;
+                const copyBtn = document.createElement('button');
+                copyBtn.className = 'copy-btn';
+                copyBtn.innerText = 'Copy 📋';
+                copyBtn.onclick = function() {
+                    navigator.clipboard.writeText(item);
+                    copyBtn.innerText = 'Copied! ✅';
+                    setTimeout(() => copyBtn.innerText = 'Copy 📋', 2000);
+                };
+                box.appendChild(textSpan);
+                box.appendChild(copyBtn);
+                container.appendChild(box);
+            });
+        }
+
+        // Tool 2: Fancy Fonts Generator Logic
+        function generateFonts() {
+            const text = document.getElementById('userInputText').value.trim();
+            const container = document.getElementById('fontsContainer');
+            container.innerHTML = "";
+
+            if (!text) {
+                container.innerHTML = '<p style="color: #aa7a8c; font-size: 0.9rem; text-align: center;">Type text above to see cool font styles!</p>';
+                return;
+            }
+
+            const styles = [
+                { name: "𝓒𝓾𝓻𝓼𝓲𝓿𝓮", map: { a: '𝓪', b: '𝓫', c: '𝓬', d: '𝓭', e: '𝓮', f: '𝓯', g: '𝓰', h: '𝓱', i: '𝓲', j: '𝓳', k: '𝓴', l: '𝓵', m: '𝓶', n: '𝓷', o: '𝓸', p: '𝓹', q: '𝓺', r: '𝓻', s: '𝓼', t: '𝓽', u: '𝓾', v: '𝓿', w: '𝔀', x: '𝔁', y: '𝔂', z: '𝔃', A: '𝓐', B: '𝓑', C: '𝓒', D: '𝓓', E: '𝓔', F: '𝓕', G: '𝓖', H: '𝓗', I: '𝓘', J: '𝓙', K: '𝓚', L: '𝓛', M: '𝓜', N: '𝓝', O: '𝓞', P: '𝓟', Q: '𝓠', R: '𝓡', S: '𝓢', T: '𝓣', U: '𝓤', V: '𝓥', W: '𝓦', X: '𝓧', Y: '𝓨', Z: '𝓩' } },
+                { name: "𝕭𝖔𝖑𝖉 𝕲𝖔𝖙𝖍𝖎𝖈", map: { a: '𝖆', b: '𝖇', c: '𝖈', d: '𝖉', e: '𝖊', f: '𝖋', g: '𝖌', h: '𝖍', i: '𝖎', j: '𝖏', k: '𝖐', l: '𝖑', m: '𝖒', n: '𝖓', o: '𝖔', p: '𝖕', q: '𝖖', r: '𝖗', s: '𝖘', t: '𝖙', u: '𝖚', v: '𝖛', w: '𝖜', x: '𝝝', y: '𝖞', z: '𝖟', A: '𝕬', B: '𝕭', C: '𝕮', D: '𝕯', E: '𝕰', F: '𝕱', G: '𝕲', H: '𝕳', I: '𝕴', J: '𝕵', K: '𝕶', L: '𝕷', M: '𝕸', N: '𝕹', O: '𝕺', P: '𝕻', Q: '𝕼', R: '𝕽', S: '𝕾', T: '𝕿', U: '𝖀', V: '𝖁', W: '𝖂', X: '𝖃', Y: '𝄄', Z: '𝖅' } },
+                { name: "𝖲𝖼𝖧𝗈𝗈𝗅 𝖡𝗈𝗅𝖽", map: { a: '𝗮', b: '𝗯', c: '𝗰', d: '𝗱', e: '𝗲', f: '𝗳', g: '𝗴', h: '𝗵', i: '𝗶', j: '𝗷', k: '𝗸', l: '𝗹', m: '𝗺', n: '𝗻', o: '𝗼', p: '𝗽', q: '𝗾', r: '𝗿', s: '𝘀', t: '𝘁', u: '𝘂', v: '𝘃', w: '𝘄', x: '𝘅', y: '𝘆', z: '𝘇', A: '𝗔', B: '𝗕', C: '𝗖', D: '𝗗', E: '𝗘', F: '𝗙', G: '𝗚', H: '𝗛', I: '𝗜', J: '𝗝', K: '𝗞', L: '𝗟', M: '𝗠', N: '𝗡', O: '𝗢', P: '𝗣', Q: '𝗤', R: '𝗥', S: '𝗦', T: '𝗧', U: '𝗨', V: '𝗩', W: '𝗪', X: '𝗫', Y: '𝗬', Z: '𝗭' } },
+                { name: "🄱🄾🅇 𝕿𝕶", map: { a: '🄰', b: '🄱', c: '🄲', d: '🄳', e: '🄴', f: '🄵', g: '🄶', h: '🄷', i: '🄸', j: '🄹', k: '🄺', l: '🄻', m: '🄼', n: '🄽', o: '🄾', p: '🄿', q: '🅀', r: '🅁', s: '🅂', t: '🅃', u: '🅄', v: '🅅', w: '🅆', x: '🅇', y: '🅈', z: '🅉', A: '🄰', B: '🄱', C: '🄲', D: '🄳', E: '🄴', F: '🄵', G: '🄶', H: '🄷', I: '🄸', J: '🄹', K: '🄺', L: '🄻', M: '🄼', N: '🄽', O: '🄾', P: '🄿', Q: '🅀', R: '🅁', S: '🅂', T: '🅃', U: '🅄', V: '🅅', W: '🅆', X: '🅇', Y: '🅈', Z: '🅉' } }
+            ];
+
+            styles.forEach(s => {
+                let converted = text.split('').map(char => s.map[char] || char).join('');
+                
+                const box = document.createElement('div');
+                box.className = 'result-box';
+                const textSpan = document.createElement('span');
+                textSpan.className = 'result-text';
+                textSpan.innerText = converted;
+                const copyBtn = document.createElement('button');
+                copyBtn.className = 'copy-btn';
+                copyBtn.innerText = 'Copy 📋';
+                copyBtn.onclick = function() {
+                    navigator.clipboard.writeText(converted);
+                    copyBtn.innerText = 'Copied! ✅';
+                    setTimeout(() => copyBtn.innerText = 'Copy 📋', 2000);
+                };
+                box.appendChild(textSpan);
+                box.appendChild(copyBtn);
+                container.appendChild(box);
+            });
+        }
+
+        // Tool 3: Hashtags Data & Logic
+        const hashtagData = {
+            igreels: "#viral #reelsinstagram #trending #foryou #explorepage #instadaily #reelsvideo #fyp #viralpost #creators",
+            nature: "#nature #photography #landscape #earthfocus #sunsetlover #greenery #peaceful #naturevibes #skyporn #beauty",
+            fashion: "#ootd #fashionstyle #streetwear #aestheticoutfit #styleinspo #chiclook #trendystyle #dailyoutfit #fashionista",
+            fitness: "#gymmotivation #workout #fitnessjourney #gains #gymlife #fitfam #healthylifestyle #strengthtraining #noexcuses"
+        };
+
+        function generateHashtags() {
+            const category = document.getElementById('hashtagCategory').value;
+            const tags = hashtagData[category];
+            const container = document.getElementById('hashtagsContainer');
+            container.innerHTML = "";
+
+            const box = document.createElement('div');
+            box.className = 'result-box';
+            const textSpan = document.createElement('span');
+            textSpan.className = 'result-text';
+            textSpan.innerText = tags;
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'copy-btn';
+            copyBtn.innerText = 'Copy All #️⃣';
+            copyBtn.onclick = function() {
+                navigator.clipboard.writeText(tags);
+                copyBtn.innerText = 'Copied! ✅';
+                setTimeout(() => copyBtn.innerText = 'Copy All #️⃣', 2000);
+            };
+            box.appendChild(textSpan);
+            box.appendChild(copyBtn);
+            container.appendChild(box);
+        }
+    </script>
+</body>
+</html>
